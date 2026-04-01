@@ -1,6 +1,13 @@
+require("dotenv").config();
+const env = require("./config/env");
+const connectDB = require("./config/db");
 const app = require("./app");
-const port = process.env.PORT || 5000;
 
-app.listen(port, () => {
-  console.log("server started on: ", port);
-});
+const start = async () => {
+  await connectDB();
+  app.listen(env.PORT, () => {
+    console.log(`Server started on port ${env.PORT} [${env.NODE_ENV}]`);
+  });
+};
+
+start();

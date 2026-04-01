@@ -1,13 +1,35 @@
 const express = require("express");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
+const env = require("./config/env");
+const errorHandler = require("./middleware/errorHandler");
+
 const app = express();
 
-// setup middlewares
-
+// Middleware
 app.use(express.json());
-app.use(cors());
+app.use(cookieParser());
+app.use(
+  cors({
+    origin: [env.CLIENT_URL].filter(Boolean),
+    credentials: true,
+  })
+);
 
-app.get("/", async (req, res, next) => {
-  return res.json({ message: "welcome to snapsell" });
+// Health check
+app.get("/", (_req, res) => {
+  res.json({ message: "Welcome to SnapSell API" });
 });
+
+// Routes
+app.use("/api/auth", require("./routes/auth.routes"));
+app.use("/api/uploads", require("./routes/upload.routes"));
+app.use("/api/categories", require("./routes/category.routes"));
+app.use("/api/products", require("./routes/product.routes"));
+app.use("/api/inquiries", require("./routes/inquiry.routes"));
+app.use("/api/admin", require("./routes/admin.routes"));
+
+// Error handler
+app.use(errorHandler);
+
 module.exports = app;
