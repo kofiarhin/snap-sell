@@ -8,7 +8,10 @@ import LoadingSpinner from "../components/LoadingSpinner";
 import EmptyState from "../components/EmptyState";
 import HomeHero from "../components/HomeHero";
 import CategoryRail from "../components/CategoryRail";
+<<<<<<< HEAD
 import "../styles/home.css";
+=======
+>>>>>>> agent-zero/implement-ui-redesign-plan-fve063
 
 const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -42,6 +45,7 @@ const HomePage = () => {
   };
 
   return (
+<<<<<<< HEAD
     <div className="pb-8">
       <HomeHero
         searchInput={searchInput}
@@ -99,13 +103,42 @@ const HomePage = () => {
       </section>
 
       <section className="ss-page pt-6 md:pt-8">
+=======
+    <div>
+      <HomeHero
+        searchInput={searchInput}
+        onSearchInputChange={setSearchInput}
+        onSubmit={handleSearch}
+      />
+
+      <CategoryRail
+        categories={categories}
+        activeCategory={params.category}
+        onSelect={(category) => updateParams({ category, page: "" })}
+      />
+
+      <section className="ss-page py-4">
+        <div className="ss-panel !p-4 flex justify-between items-center gap-4">
+          <p className="text-sm ss-muted">{data?.pagination?.total || 0} products</p>
+          <select
+            value={params.sort}
+            onChange={(e) => updateParams({ sort: e.target.value, page: "" })}
+            className="ss-select !w-auto min-w-48"
+          >
+            <option value="-createdAt">Newest</option>
+            <option value="createdAt">Oldest</option>
+            <option value="price">Price: Low to High</option>
+            <option value="-price">Price: High to Low</option>
+          </select>
+        </div>
+      </section>
+
+      <section className="ss-page pt-2">
+>>>>>>> agent-zero/implement-ui-redesign-plan-fve063
         {isLoading ? (
           <LoadingSpinner />
         ) : !data?.products?.length ? (
-          <EmptyState
-            title="No products found"
-            message="Try adjusting your search or filters"
-          />
+          <EmptyState title="No products found" message="Try adjusting your search or filters" />
         ) : (
           <>
             <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
@@ -113,10 +146,7 @@ const HomePage = () => {
                 <ProductCard key={product._id} product={product} />
               ))}
             </div>
-            <Pagination
-              pagination={data.pagination}
-              onPageChange={(page) => updateParams({ page })}
-            />
+            <Pagination pagination={data.pagination} onPageChange={(page) => updateParams({ page })} />
           </>
         )}
       </section>

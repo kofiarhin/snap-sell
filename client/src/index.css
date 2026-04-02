@@ -170,6 +170,49 @@
     background: rgb(16 21 33 / 0.82);
   }
 
+<<<<<<< HEAD
+=======
+
+  .ss-home-hero {
+    @apply relative rounded-3xl border px-4 sm:px-8 py-12 sm:py-16;
+    background:
+      radial-gradient(circle at 50% -15%, rgb(255 252 0 / 0.14), transparent 42%),
+      linear-gradient(160deg, rgb(18 23 35 / 0.95), rgb(12 16 25 / 0.94));
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.04), 0 24px 50px rgb(2 5 12 / 0.35);
+  }
+
+  .ss-home-kicker {
+    @apply inline-flex items-center rounded-full px-3 py-1 text-xs font-semibold uppercase tracking-[0.16em] mb-5;
+    background: rgb(255 252 0 / 0.12);
+    color: var(--ss-brand);
+    border: 1px solid rgb(255 252 0 / 0.28);
+  }
+
+  .ss-category-rail {
+    @apply flex items-center gap-2 overflow-x-auto pb-2;
+    scrollbar-width: thin;
+  }
+
+  .ss-category-chip {
+    @apply shrink-0 rounded-full border px-4 py-2 text-sm font-medium;
+    background: rgb(22 29 43 / 0.75);
+    color: var(--ss-muted);
+    border-color: rgb(255 255 255 / 0.1);
+  }
+
+  .ss-category-chip:hover {
+    color: white;
+    border-color: rgb(255 255 255 / 0.24);
+    background: rgb(29 37 54 / 0.88);
+  }
+
+  .ss-category-chip-active {
+    background: var(--ss-brand);
+    border-color: rgb(255 252 0 / 0.8);
+    color: #0a0d16;
+  }
+
+>>>>>>> agent-zero/implement-ui-redesign-plan-fve063
   .ss-divider {
     @apply border-t my-4;
     border-color: rgb(143 152 173 / 0.22);
