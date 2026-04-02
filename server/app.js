@@ -6,15 +6,34 @@ const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
+const configuredOrigins = (env.CLIENT_URL || "")
+  .split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+
+const isAllowedDevOrigin = (origin) =>
+  env.NODE_ENV !== "production" &&
+  /^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?$/.test(origin);
+
+const corsOptions = {
+  origin(origin, callback) {
+    if (!origin) {
+      return callback(null, true);
+    }
+
+    if (configuredOrigins.includes(origin) || isAllowedDevOrigin(origin)) {
+      return callback(null, true);
+    }
+
+    return callback(null, false);
+  },
+  credentials: true,
+};
+
 // Middleware
 app.use(express.json());
 app.use(cookieParser());
-app.use(
-  cors({
-    origin: [env.CLIENT_URL].filter(Boolean),
-    credentials: true,
-  })
-);
+app.use(cors(corsOptions));
 
 // Health check
 app.get("/", (_req, res) => {
