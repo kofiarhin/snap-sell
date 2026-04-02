@@ -120,6 +120,108 @@
     background: rgb(36 45 66 / 0.75);
   }
 
+  .ss-category-clear {
+    @apply inline-flex items-center justify-center rounded-full border px-3 py-1.5 text-sm font-medium;
+    color: #d5ddeb;
+    border-color: rgb(255 255 255 / 0.12);
+    background: rgb(255 255 255 / 0.02);
+  }
+
+  .ss-category-clear:hover {
+    color: #ffffff;
+    border-color: rgb(255 255 255 / 0.22);
+    background: rgb(255 255 255 / 0.06);
+  }
+
+  .ss-category-clear:active {
+    transform: translateY(1px);
+    background: rgb(255 255 255 / 0.1);
+  }
+
+  .ss-category-rail-wrap {
+    @apply relative overflow-hidden rounded-full border;
+    border-color: rgb(255 255 255 / 0.12);
+    background: rgb(255 255 255 / 0.03);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07);
+  }
+
+  .ss-category-track {
+    @apply -mb-2 flex gap-1 overflow-x-auto px-2 pb-2 pt-2 sm:gap-1.5 sm:px-3;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .ss-category-track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ss-category-tab {
+    @apply relative inline-flex shrink-0 items-center rounded-full px-3 py-2.5 text-[13px] font-medium tracking-tight whitespace-nowrap sm:text-sm;
+    color: #9aa4b8;
+  }
+
+  .ss-category-tab::before {
+    content: "";
+    @apply absolute inset-0 rounded-full opacity-0;
+    background: rgb(255 255 255 / 0.06);
+    transition: opacity 150ms ease;
+  }
+
+  .ss-category-tab::after {
+    content: "";
+    position: absolute;
+    right: 12px;
+    bottom: 4px;
+    left: 12px;
+    height: 2px;
+    border-radius: 9999px;
+    background: var(--ss-brand);
+    opacity: 0;
+    transform: scaleX(0.45);
+    transition: transform 180ms ease, opacity 160ms ease;
+  }
+
+  .ss-category-tab:hover {
+    color: #dde3ef;
+  }
+
+  .ss-category-tab:hover::before {
+    opacity: 1;
+  }
+
+  .ss-category-tab:active {
+    transform: translateY(1px);
+  }
+
+  .ss-category-tab-active {
+    color: #ffffff;
+  }
+
+  .ss-category-tab-active::before {
+    opacity: 1;
+    background: rgb(255 255 255 / 0.09);
+  }
+
+  .ss-category-tab-active::after {
+    opacity: 1;
+    transform: scaleX(1);
+  }
+
+  .ss-category-fade-left,
+  .ss-category-fade-right {
+    @apply pointer-events-none absolute bottom-0 top-0 z-10 w-6 sm:w-10;
+  }
+
+  .ss-category-fade-left {
+    @apply left-0;
+    background: linear-gradient(90deg, rgb(9 11 18 / 0.95), rgb(9 11 18 / 0));
+  }
+
+  .ss-category-fade-right {
+    @apply right-0;
+    background: linear-gradient(270deg, rgb(9 11 18 / 0.95), rgb(9 11 18 / 0));
+  }
+
   .ss-btn-danger {
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-4 py-2.5 font-medium text-white;
     background: rgb(255 90 113 / 0.9);
