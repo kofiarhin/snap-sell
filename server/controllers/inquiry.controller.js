@@ -8,13 +8,13 @@ exports.create = asyncHandler(async (req, res) => {
 });
 
 exports.getSellerInquiries = asyncHandler(async (req, res) => {
-  const inquiries = await inquiryService.getSellerInquiries(req.user._id);
-  sendSuccess(res, { data: inquiries });
+  const data = await inquiryService.getSellerInquiries(req.user._id, req.query);
+  sendSuccess(res, { data });
 });
 
 exports.getByProduct = asyncHandler(async (req, res) => {
-  const inquiries = await inquiryService.getByProduct(req.params.productId, req.user._id);
-  sendSuccess(res, { data: inquiries });
+  const data = await inquiryService.getByProduct(req.params.productId, req.user._id, req.query);
+  sendSuccess(res, { data });
 });
 
 exports.getById = asyncHandler(async (req, res) => {

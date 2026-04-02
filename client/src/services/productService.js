@@ -4,7 +4,7 @@ export const getProducts = (params) => api.get("/products", { params });
 export const getProductBySlug = (slug) => api.get(`/products/${slug}`);
 export const getSellerPublicProducts = (sellerId) =>
   api.get(`/products/seller/${sellerId}/public`);
-export const getMyProducts = () => api.get("/products/seller/me");
+export const getMyProducts = (params) => api.get("/products/seller/me", { params });
 export const createProduct = (data) => api.post("/products", data);
 export const updateProduct = (id, data) => api.put(`/products/${id}`, data);
 export const deleteProduct = (id) => api.delete(`/products/${id}`);

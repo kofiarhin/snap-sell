@@ -5,21 +5,21 @@ import {
   getInquiryById,
 } from "../../services/inquiryService";
 
-export const useSellerInquiries = () => {
+export const useSellerInquiries = (params = {}) => {
   return useQuery({
-    queryKey: ["inquiries", "seller"],
+    queryKey: ["inquiries", "seller", params],
     queryFn: async () => {
-      const res = await getSellerInquiries();
+      const res = await getSellerInquiries(params);
       return res.data.data;
     },
   });
 };
 
-export const useProductInquiries = (productId) => {
+export const useProductInquiries = (productId, params = {}) => {
   return useQuery({
-    queryKey: ["inquiries", "product", productId],
+    queryKey: ["inquiries", "product", productId, params],
     queryFn: async () => {
-      const res = await getInquiriesByProduct(productId);
+      const res = await getInquiriesByProduct(productId, params);
       return res.data.data;
     },
     enabled: !!productId,

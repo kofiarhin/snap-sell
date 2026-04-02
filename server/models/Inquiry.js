@@ -50,4 +50,7 @@ const inquirySchema = new mongoose.Schema(
   { timestamps: true }
 );
 
+inquirySchema.index({ seller: 1, createdAt: -1 });
+inquirySchema.index({ product: 1, createdAt: -1 });
+
 module.exports = mongoose.model("Inquiry", inquirySchema);

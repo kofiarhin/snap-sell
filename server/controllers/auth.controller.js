@@ -2,6 +2,7 @@ const authService = require("../services/auth.service");
 const { sendSuccess } = require("../utils/apiResponse");
 const { cookieName, cookieOptions } = require("../config/cookie");
 const asyncHandler = require("../utils/asyncHandler");
+const { clearAuthAttempts } = require("../middleware/bruteforce");
 
 exports.register = asyncHandler(async (req, res) => {
   const { user, token } = await authService.register(req.body);
@@ -11,6 +12,7 @@ exports.register = asyncHandler(async (req, res) => {
 
 exports.login = asyncHandler(async (req, res) => {
   const { user, token } = await authService.login(req.body);
+  clearAuthAttempts(req);
   res.cookie(cookieName, token, cookieOptions);
   sendSuccess(res, { message: "Login successful", data: user });
 });

@@ -3,10 +3,21 @@ const cors = require("cors");
 const cookieParser = require("cookie-parser");
 const env = require("./config/env");
 const errorHandler = require("./middleware/errorHandler");
+const {
+  createRateLimiter,
+  csrfOriginProtection,
+  requestContext,
+  requestLogger,
+  securityHeaders,
+} = require("./middleware/security");
 
 const app = express();
 
 // Middleware
+app.set("trust proxy", 1);
+app.use(requestContext);
+app.use(requestLogger);
+app.use(securityHeaders);
 app.use(express.json());
 app.use(cookieParser());
 app.use(
@@ -15,10 +26,18 @@ app.use(
     credentials: true,
   })
 );
+app.use(createRateLimiter({ windowMs: 15 * 60 * 1000, max: 200 }));
+app.use(csrfOriginProtection);
 
 // Health check
 app.get("/", (_req, res) => {
   res.json({ message: "Welcome to SnapSell API" });
+});
+app.get("/health/live", (_req, res) => {
+  res.status(200).json({ success: true, message: "live" });
+});
+app.get("/health/ready", (_req, res) => {
+  res.status(200).json({ success: true, message: "ready" });
 });
 
 // Routes
