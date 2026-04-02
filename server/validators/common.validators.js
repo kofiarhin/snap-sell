@@ -25,6 +25,7 @@ const paginationQuerySchema = z.object({
   limit: z.coerce.number().int().positive().max(100).default(12),
   search: z.string().optional(),
   sort: z.string().optional(),
+  status: z.enum(["active", "sold", "archived", "inactive"]).optional(),
 });
 
 const productQuerySchema = paginationQuerySchema.extend({

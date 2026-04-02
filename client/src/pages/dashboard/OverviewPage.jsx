@@ -18,10 +18,13 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
 );
 
 const OverviewPage = () => {
-  const { data: products, isLoading: loadingProducts } = useMyProducts();
-  const { data: inquiries, isLoading: loadingInquiries } = useSellerInquiries();
+  const { data: productsData, isLoading: loadingProducts } = useMyProducts({ page: 1, limit: 100 });
+  const { data: inquiriesData, isLoading: loadingInquiries } = useSellerInquiries({ page: 1, limit: 100 });
 
   if (loadingProducts || loadingInquiries) return <LoadingSpinner />;
+
+  const products = productsData?.products || [];
+  const inquiries = inquiriesData?.inquiries || [];
 
   const active = products?.filter((p) => p.status === "active").length || 0;
   const sold = products?.filter((p) => p.status === "sold").length || 0;

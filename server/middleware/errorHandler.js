@@ -72,7 +72,16 @@ const errorHandler = (err, req, res, _next) => {
   }
 
   // Unknown error
-  console.error("Unhandled error:", err);
+  console.error(
+    JSON.stringify({
+      level: "error",
+      type: "unhandled_error",
+      requestId: req.requestId || null,
+      message: err.message,
+      stack: err.stack,
+      timestamp: new Date().toISOString(),
+    })
+  );
   return sendError(res, {
     statusCode: 500,
     code: "SERVER_ERROR",

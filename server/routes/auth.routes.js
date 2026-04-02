@@ -10,9 +10,10 @@ const {
   forgotPasswordSchema,
   resetPasswordSchema,
 } = require("../validators/auth.validators");
+const { authBruteForceProtection } = require("../middleware/bruteforce");
 
 router.post("/register", validate(registerSchema), authController.register);
-router.post("/login", validate(loginSchema), authController.login);
+router.post("/login", authBruteForceProtection(), validate(loginSchema), authController.login);
 router.post("/logout", authController.logout);
 router.get("/me", authenticate, authController.getMe);
 router.put("/profile", authenticate, validate(updateProfileSchema), authController.updateProfile);

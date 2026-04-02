@@ -116,8 +116,36 @@ const getBySlug = async (slug) => {
   return product;
 };
 
-const getSellerProducts = async (sellerId) => {
-  return Product.find({ seller: sellerId }).sort("-createdAt").lean();
+const getSellerProducts = async (sellerId, query = {}) => {
+  const { page = 1, limit = 12, search, sort = "-createdAt", status } = query;
+  const filter = { seller: sellerId };
+
+  if (status) {
+    filter.status = status;
+  }
+
+  if (search) {
+    filter.$or = [
+      { title: { $regex: search, $options: "i" } },
+      { description: { $regex: search, $options: "i" } },
+    ];
+  }
+
+  const skip = (Number(page) - 1) * Number(limit);
+  const [products, total] = await Promise.all([
+    Product.find(filter).sort(sort).skip(skip).limit(Number(limit)).lean(),
+    Product.countDocuments(filter),
+  ]);
+
+  return {
+    products,
+    pagination: {
+      page: Number(page),
+      limit: Number(limit),
+      total,
+      pages: Math.ceil(total / Number(limit)),
+    },
+  };
 };
 
 const getSellerPublicProducts = async (sellerId) => {

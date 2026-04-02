@@ -27,11 +27,11 @@ export const useProduct = (slug) => {
   });
 };
 
-export const useMyProducts = () => {
+export const useMyProducts = (params = {}) => {
   return useQuery({
-    queryKey: ["products", "mine"],
+    queryKey: ["products", "mine", params],
     queryFn: async () => {
-      const res = await getMyProducts();
+      const res = await getMyProducts(params);
       return res.data.data;
     },
   });

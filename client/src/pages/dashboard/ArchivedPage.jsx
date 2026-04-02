@@ -4,13 +4,13 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import EmptyState from "../../components/EmptyState";
 
 const ArchivedPage = () => {
-  const { data: products, isLoading } = useMyProducts();
+  const { data, isLoading } = useMyProducts({ page: 1, limit: 100 });
   const reactivate = useReactivateProduct();
   const deleteMutation = useDeleteProduct();
 
   if (isLoading) return <LoadingSpinner />;
 
-  const archived = products?.filter((p) => ["archived", "inactive"].includes(p.status)) || [];
+  const archived = data?.products?.filter((p) => ["archived", "inactive"].includes(p.status)) || [];
 
   return (
     <div>

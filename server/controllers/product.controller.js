@@ -28,8 +28,8 @@ exports.getBySlug = asyncHandler(async (req, res) => {
 });
 
 exports.getMyProducts = asyncHandler(async (req, res) => {
-  const products = await productService.getSellerProducts(req.user._id);
-  sendSuccess(res, { data: products });
+  const data = await productService.getSellerProducts(req.user._id, req.query);
+  sendSuccess(res, { data });
 });
 
 exports.getSellerPublic = asyncHandler(async (req, res) => {

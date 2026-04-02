@@ -29,21 +29,63 @@ const create = async (data) => {
   return inquiry;
 };
 
-const getSellerInquiries = async (sellerId) => {
-  return Inquiry.find({ seller: sellerId })
-    .populate("product", "title slug images status")
-    .sort("-createdAt")
-    .lean();
+const getSellerInquiries = async (sellerId, query = {}) => {
+  const { page = 1, limit = 12, search, sort = "-createdAt" } = query;
+  const filter = { seller: sellerId };
+
+  if (search) {
+    filter.$or = [
+      { "buyer.name": { $regex: search, $options: "i" } },
+      { "buyer.email": { $regex: search, $options: "i" } },
+    ];
+  }
+
+  const skip = (Number(page) - 1) * Number(limit);
+  const [inquiries, total] = await Promise.all([
+    Inquiry.find(filter)
+      .populate("product", "title slug images status")
+      .sort(sort)
+      .skip(skip)
+      .limit(Number(limit))
+      .lean(),
+    Inquiry.countDocuments(filter),
+  ]);
+
+  return {
+    inquiries,
+    pagination: {
+      page: Number(page),
+      limit: Number(limit),
+      total,
+      pages: Math.ceil(total / Number(limit)),
+    },
+  };
 };
 
-const getByProduct = async (productId, sellerId) => {
+const getByProduct = async (productId, sellerId, query = {}) => {
   const product = await Product.findById(productId);
   if (!product) throw new AppError("Product not found", 404, "NOT_FOUND");
   if (product.seller.toString() !== sellerId.toString()) {
     throw new AppError("Not authorized", 403, "FORBIDDEN");
   }
 
-  return Inquiry.find({ product: productId }).sort("-createdAt").lean();
+  const { page = 1, limit = 12, sort = "-createdAt" } = query;
+  const filter = { product: productId };
+  const skip = (Number(page) - 1) * Number(limit);
+  const [inquiries, total] = await Promise.all([
+    Inquiry.find(filter).sort(sort).skip(skip).limit(Number(limit)).lean(),
+    Inquiry.countDocuments(filter),
+  ]);
+
+  return {
+    inquiries,
+    pagination: {
+      page: Number(page),
+      limit: Number(limit),
+      total,
+      pages: Math.ceil(total / Number(limit)),
+    },
+  };
 };
 
 const getById = async (inquiryId, sellerId) => {

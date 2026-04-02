@@ -4,12 +4,12 @@ import LoadingSpinner from "../../components/LoadingSpinner";
 import EmptyState from "../../components/EmptyState";
 
 const SoldItemsPage = () => {
-  const { data: products, isLoading } = useMyProducts();
+  const { data, isLoading } = useMyProducts({ page: 1, limit: 100, status: "sold" });
   const reactivate = useReactivateProduct();
 
   if (isLoading) return <LoadingSpinner />;
 
-  const sold = products?.filter((p) => p.status === "sold") || [];
+  const sold = data?.products || [];
 
   return (
     <div>

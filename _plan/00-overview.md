@@ -1,11 +1,11 @@
 # SnapSell Production Readiness Plan — Overview
 
-## Current State
+## Current State (Updated)
 
-The MVP has solid foundations:
-- **Backend:** Fully built — all models (User, Product, Category, Inquiry), controllers, services, routes, middleware (auth, validation, error handling), Zod validators, Cloudinary integration, and seed scripts.
-- **Frontend:** Pages exist for public (Home, Products, ProductDetail, Login, Register) and seller dashboard (all 10 pages). Components (Navbar, Footer, ProductCard, DashboardLayout, ImageUpload, Pagination, LoadingSpinner, EmptyState, ProtectedRoute, GuestRoute). Services, hooks (queries + mutations), Redux auth slice, and Providers are all wired up.
-- **What's NOT wired:** App.jsx has no routes — it's a placeholder. No admin pages exist. No forgot/reset password flow. No `/category/:slug` or `/seller/:sellerId` public pages. No `NotFoundPage`. No tests. No rate limiting. No CI config.
+The MVP has strong foundations with key hardening work now in progress:
+- **Backend:** Models/controllers/services/routes are implemented with auth, validation, and error handling. Security controls now include global/request-level rate limiting, CSRF origin protection, request IDs, and structured request/error logs.
+- **Frontend:** Public + seller/admin dashboards exist, and app providers are now bootstrapped at the root to ensure Redux, TanStack Query, and routing contexts initialize correctly.
+- **Remaining gaps:** automated backend/frontend tests, CI workflows, deeper admin moderation surface, and production monitoring integrations.
 
 ## Execution Phases (11 total)
 

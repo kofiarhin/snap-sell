@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { useState } from "react";
 import { useMyProducts } from "../../hooks/queries/useProducts";
 import {
   useDeleteProduct,
@@ -8,6 +9,7 @@ import {
 } from "../../hooks/mutations/useProductMutations";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import EmptyState from "../../components/EmptyState";
+import Pagination from "../../components/Pagination";
 
 const statusBadge = {
   active: "bg-green-100 text-green-700",
@@ -17,7 +19,8 @@ const statusBadge = {
 };
 
 const MyListingsPage = () => {
-  const { data: products, isLoading } = useMyProducts();
+  const [page, setPage] = useState(1);
+  const { data, isLoading } = useMyProducts({ page, limit: 8, status: "active" });
   const deleteMutation = useDeleteProduct();
   const soldMutation = useMarkSold();
   const archiveMutation = useArchiveProduct();
@@ -25,7 +28,8 @@ const MyListingsPage = () => {
 
   if (isLoading) return <LoadingSpinner />;
 
-  const activeProducts = products?.filter((p) => p.status === "active") || [];
+  const activeProducts = data?.products || [];
+  const pagination = data?.pagination;
 
   return (
     <div>
@@ -114,6 +118,7 @@ const MyListingsPage = () => {
           ))}
         </div>
       )}
+      <Pagination pagination={pagination} onPageChange={setPage} />
     </div>
   );
 };

@@ -1,12 +1,7 @@
 import axios from "axios";
-
-const baseURL = import.meta.env.VITE_API_URL;
-
-if (!baseURL) {
-  throw new Error("Missing VITE_API_URL environment variable");
-}
+import { env } from "../config/env";
 
 export const api = axios.create({
-  baseURL,
+  baseURL: env.apiUrl,
   withCredentials: true,
 });
