@@ -4,11 +4,7 @@ import { useCloseInquiry } from "../../hooks/mutations/useInquiryMutations";
 import LoadingSpinner from "../../components/LoadingSpinner";
 import EmptyState from "../../components/EmptyState";
 
-const statusBadge = {
-  new: "bg-orange-100 text-orange-700",
-  responded: "bg-blue-100 text-blue-700",
-  closed: "bg-gray-100 text-gray-700",
-};
+import { getStatusBadgeClass } from "../../utils/ui";
 
 const InquiriesPage = () => {
   const { data: inquiries, isLoading } = useSellerInquiries();
@@ -27,18 +23,18 @@ const InquiriesPage = () => {
           {inquiries.map((inquiry) => (
             <div
               key={inquiry._id}
-              className="bg-white border border-gray-200 rounded-lg p-4"
+              className="ss-card"
             >
               <div className="flex items-start justify-between mb-2">
                 <div>
                   <p className="font-medium">{inquiry.buyer?.name}</p>
-                  <p className="text-sm text-gray-500">{inquiry.buyer?.email}</p>
+                  <p className="text-sm ss-muted">{inquiry.buyer?.email}</p>
                 </div>
-                <span className={`px-2 py-1 rounded text-xs font-medium ${statusBadge[inquiry.status]}`}>
+                <span className={getStatusBadgeClass(inquiry.status)}>
                   {inquiry.status}
                 </span>
               </div>
-              <p className="text-sm text-gray-600 mb-2">
+              <p className="text-sm ss-muted mb-2">
                 Re: <span className="font-medium">{inquiry.product?.title}</span>
               </p>
               <p className="text-sm text-gray-500 line-clamp-2">
@@ -47,7 +43,7 @@ const InquiriesPage = () => {
               <div className="flex gap-3 mt-3">
                 <Link
                   to={`/dashboard/inquiries/${inquiry._id}`}
-                  className="text-sm text-indigo-600 hover:underline"
+                  className="text-sm text-[var(--ss-brand)] hover:underline"
                 >
                   View Thread
                 </Link>
