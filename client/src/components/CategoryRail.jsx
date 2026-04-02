@@ -1,5 +1,6 @@
-<<<<<<< HEAD
 const CategoryRail = ({ categories = [], activeCategory, onCategoryChange }) => {
+  if (!categories.length) return null;
+
   return (
     <section className="ss-page pt-2 md:pt-4">
       <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
@@ -32,27 +33,11 @@ const CategoryRail = ({ categories = [], activeCategory, onCategoryChange }) => 
           type="button"
           onClick={() => onCategoryChange("")}
           aria-pressed={!activeCategory}
-          className={`ss-category-chip ${
-            !activeCategory ? "ss-category-chip-active" : ""
-          }`}
-=======
-const CategoryRail = ({ categories, activeCategory, onSelect }) => {
-  if (!categories?.length) return null;
-
-  return (
-    <section className="ss-page pt-0">
-      <div className="ss-category-rail" role="tablist" aria-label="Filter products by category">
-        <button
-          type="button"
-          onClick={() => onSelect("")}
           className={`ss-category-chip ${!activeCategory ? "ss-category-chip-active" : ""}`}
-          aria-pressed={!activeCategory}
->>>>>>> agent-zero/implement-ui-redesign-plan-fve063
         >
           All
         </button>
 
-<<<<<<< HEAD
         {categories.map((category) => {
           const isActive = activeCategory === category.slug;
 
@@ -62,24 +47,9 @@ const CategoryRail = ({ categories, activeCategory, onSelect }) => {
               type="button"
               onClick={() => onCategoryChange(category.slug)}
               aria-pressed={isActive}
-              className={`ss-category-chip ${
-                isActive ? "ss-category-chip-active" : ""
-              }`}
+              className={`ss-category-chip ${isActive ? "ss-category-chip-active" : ""}`}
             >
               {category.label}
-=======
-        {categories.map((cat) => {
-          const isActive = activeCategory === cat.slug;
-          return (
-            <button
-              key={cat.value}
-              type="button"
-              onClick={() => onSelect(cat.slug)}
-              className={`ss-category-chip ${isActive ? "ss-category-chip-active" : ""}`}
-              aria-pressed={isActive}
-            >
-              {cat.label}
->>>>>>> agent-zero/implement-ui-redesign-plan-fve063
             </button>
           );
         })}
