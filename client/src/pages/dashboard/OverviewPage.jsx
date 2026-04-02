@@ -1,21 +1,14 @@
+import { HiCollection, HiCheckCircle, HiChatAlt2, HiArchive } from "react-icons/hi";
 import { useMyProducts } from "../../hooks/queries/useProducts";
 import { useSellerInquiries } from "../../hooks/queries/useInquiries";
 import LoadingSpinner from "../../components/LoadingSpinner";
-import { HiCollection, HiCheckCircle, HiChatAlt2, HiArchive } from "react-icons/hi";
 
-const StatCard = ({ icon: Icon, label, value, color }) => (
-  <div className="bg-white rounded-xl border border-gray-200 p-6">
-    <div className="flex items-center gap-4">
-      <div className={`p-3 rounded-lg ${color}`}>
-        <Icon className="w-6 h-6 text-white" />
-      </div>
-      <div>
-        <p className="text-sm text-gray-500">{label}</p>
-        <p className="text-2xl font-bold">{value}</p>
-      </div>
-    </div>
-  </div>
-);
+const metrics = [
+  { key: "active", label: "Active Listings", icon: HiCollection },
+  { key: "sold", label: "Sold", icon: HiCheckCircle },
+  { key: "archived", label: "Archived", icon: HiArchive },
+  { key: "newInquiries", label: "New Inquiries", icon: HiChatAlt2 },
+];
 
 const OverviewPage = () => {
   const { data: products, isLoading: loadingProducts } = useMyProducts();
@@ -23,20 +16,46 @@ const OverviewPage = () => {
 
   if (loadingProducts || loadingInquiries) return <LoadingSpinner />;
 
-  const active = products?.filter((p) => p.status === "active").length || 0;
-  const sold = products?.filter((p) => p.status === "sold").length || 0;
-  const archived = products?.filter((p) => ["archived", "inactive"].includes(p.status)).length || 0;
-  const newInquiries = inquiries?.filter((i) => i.status === "new").length || 0;
+  const values = {
+    active: products?.filter((p) => p.status === "active").length || 0,
+    sold: products?.filter((p) => p.status === "sold").length || 0,
+    archived: products?.filter((p) => ["archived", "inactive"].includes(p.status)).length || 0,
+    newInquiries: inquiries?.filter((i) => i.status === "new").length || 0,
+  };
 
   return (
-    <div>
-      <h1 className="text-2xl font-bold mb-6">Dashboard</h1>
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <StatCard icon={HiCollection} label="Active Listings" value={active} color="bg-indigo-500" />
-        <StatCard icon={HiCheckCircle} label="Sold" value={sold} color="bg-green-500" />
-        <StatCard icon={HiArchive} label="Archived" value={archived} color="bg-gray-500" />
-        <StatCard icon={HiChatAlt2} label="New Inquiries" value={newInquiries} color="bg-orange-500" />
-      </div>
+    <div className="space-y-8">
+      <header className="grid gap-2">
+        <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">Seller dashboard</p>
+        <h1 className="text-4xl tracking-tighter text-zinc-100">Operations overview</h1>
+        <p className="max-w-[65ch] text-zinc-400">
+          Track current inventory, completed sales, and fresh inquiries from one workspace.
+        </p>
+      </header>
+
+      <section className="grid gap-4 md:grid-cols-2 xl:grid-cols-4">
+        {metrics.map(({ key, label, icon: Icon }) => (
+          <article
+            key={key}
+            className="rounded-3xl border border-zinc-800 bg-zinc-950/50 p-5 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]"
+          >
+            <div className="flex items-center justify-between">
+              <p className="text-sm text-zinc-400">{label}</p>
+              <span className="rounded-lg border border-zinc-700 bg-zinc-900 p-2 text-zinc-300">
+                <Icon className="h-4 w-4" />
+              </span>
+            </div>
+            <p className="mt-4 text-4xl tracking-tighter text-zinc-100">{values[key]}</p>
+          </article>
+        ))}
+      </section>
+
+      {!products?.length && (
+        <section className="rounded-3xl border border-zinc-800 bg-zinc-950/40 p-6">
+          <h2 className="text-lg text-zinc-100">No listings yet</h2>
+          <p className="mt-2 text-zinc-400">Create your first product listing to start receiving inquiries.</p>
+        </section>
+      )}
     </div>
   );
 };

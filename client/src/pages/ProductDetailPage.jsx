@@ -1,10 +1,10 @@
 import { useParams } from "react-router-dom";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { HiMail, HiPhone, HiUser, HiCurrencyDollar } from "react-icons/hi";
 import { useProduct } from "../hooks/queries/useProducts";
 import { useCreateInquiry } from "../hooks/mutations/useInquiryMutations";
-import { useForm } from "react-hook-form";
 import LoadingSpinner from "../components/LoadingSpinner";
-import { HiMail, HiPhone, HiUser, HiCurrencyDollar } from "react-icons/hi";
 
 const ProductDetailPage = () => {
   const { slug } = useParams();
@@ -40,181 +40,122 @@ const ProductDetailPage = () => {
   };
 
   if (isLoading) return <LoadingSpinner />;
-  if (!product) return <div className="text-center py-16">Product not found</div>;
+  if (!product) return <div className="py-16 text-center text-zinc-300">Product not found</div>;
 
   return (
-    <div className="ss-page">
-      <div className="ss-shell p-4 sm:p-6 lg:p-8">
-        <div className="grid gap-8 lg:grid-cols-[1.15fr_0.85fr] lg:gap-10">
-          <div>
-            <div className="rounded-2xl border bg-[rgb(10_13_21_/_0.82)] p-2 shadow-[0_14px_34px_rgb(2_5_14_/_0.45)]">
-              <div className="aspect-square overflow-hidden rounded-xl bg-[rgb(8_11_18_/_0.94)]">
-                <img
-                  src={product.images[activeImage]?.url}
-                  alt={product.title}
-                  className="h-full w-full object-cover"
-                />
-              </div>
+    <div className="mx-auto max-w-[1400px] px-4 py-8 md:py-10">
+      <div className="grid gap-7 md:grid-cols-[1.2fr_0.8fr] md:gap-10">
+        <section className="space-y-4">
+          <div className="overflow-hidden rounded-3xl border border-zinc-800 bg-zinc-900/60 p-3">
+            <div className="aspect-square overflow-hidden rounded-2xl bg-zinc-950/70">
+              <img src={product.images[activeImage]?.url} alt={product.title} className="h-full w-full object-cover" />
             </div>
-
-            {product.images.length > 1 && (
-              <div className="mt-4 flex gap-2.5 overflow-x-auto pb-1">
-                {product.images.map((img, i) => (
-                  <button
-                    key={i}
-                    onClick={() => setActiveImage(i)}
-                    className={`h-16 w-16 shrink-0 overflow-hidden rounded-lg border-2 bg-[rgb(10_13_21_/_0.9)] ${
-                      i === activeImage
-                        ? "border-[var(--ss-brand)]"
-                        : "border-[rgb(255_255_255_/_0.12)] hover:border-[rgb(255_255_255_/_0.28)]"
-                    }`}
-                  >
-                    <img src={img.url} alt="" className="h-full w-full object-cover" />
-                  </button>
-                ))}
-              </div>
-            )}
           </div>
 
-          <div className="ss-card-elevated p-5 sm:p-6">
-            <span className="inline-flex items-center rounded-full border border-[rgb(255_252_0_/_0.32)] bg-[rgb(255_252_0_/_0.12)] px-3 py-1 text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ss-brand)]">
-              {product.category?.label}
-            </span>
-
-            <h1 className="mt-4 text-3xl font-semibold tracking-tight text-white sm:text-4xl">
-              {product.title}
-            </h1>
-
-            <p className="mt-4 text-3xl font-bold text-[var(--ss-brand)]">
-              ${product.price?.toFixed(2)}
-            </p>
-
-            {product.quantity > 0 && (
-              <p className="mt-2 text-sm ss-muted">{product.quantity} available</p>
-            )}
-
-            {product.status !== "active" && (
-              <span className="ss-badge-danger mt-3">{product.status}</span>
-            )}
-
-            <div className="ss-divider" />
-
-            <div>
-              <h2 className="text-base font-semibold text-white">Description</h2>
-              <p className="mt-2 whitespace-pre-line leading-relaxed text-[rgb(223_230_244_/_0.92)]">
-                {product.description}
-              </p>
-            </div>
-
-            {product.seller && (
-              <div className="mt-6 rounded-xl border bg-[rgb(18_24_36_/_0.85)] p-4">
-                <p className="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--ss-muted)]">
-                  Seller
-                </p>
-                <div className="mt-3 flex items-center gap-3">
-                  <img
-                    src={product.seller.profileImage?.url}
-                    alt={product.seller.fullName}
-                    className="h-11 w-11 rounded-full object-cover ring-2 ring-[rgb(255_255_255_/_0.1)]"
-                  />
-                  <div>
-                    <p className="font-medium text-white">{product.seller.fullName}</p>
-                    <p className="text-sm ss-muted">Trusted seller</p>
-                  </div>
-                </div>
-              </div>
-            )}
-
-            {product.status === "active" && (
-              <button
-                onClick={() => setShowInquiry(!showInquiry)}
-                className="ss-btn-primary mt-6 w-full !py-3"
-              >
-                {showInquiry ? "Cancel" : "Contact Seller"}
-              </button>
-            )}
-
-            {showInquiry && (
-              <form
-                onSubmit={handleSubmit(onSubmitInquiry)}
-                className="mt-4 space-y-4 rounded-xl border bg-[rgb(12_16_25_/_0.82)] p-4 sm:p-5"
-              >
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-[rgb(232_238_251_/_0.92)]">
-                    <HiUser className="mr-1 inline h-4 w-4 text-[var(--ss-brand)]" />
-                    Your Name
-                  </label>
-                  <input
-                    {...register("name", { required: "Name is required" })}
-                    className="ss-input"
-                  />
-                  {errors.name && (
-                    <p className="mt-1 text-sm text-red-400">{errors.name.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-[rgb(232_238_251_/_0.92)]">
-                    <HiMail className="mr-1 inline h-4 w-4 text-[var(--ss-brand)]" />
-                    Email
-                  </label>
-                  <input
-                    type="email"
-                    {...register("email", { required: "Email is required" })}
-                    className="ss-input"
-                  />
-                  {errors.email && (
-                    <p className="mt-1 text-sm text-red-400">{errors.email.message}</p>
-                  )}
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-[rgb(232_238_251_/_0.92)]">
-                    <HiPhone className="mr-1 inline h-4 w-4 text-[var(--ss-brand)]" />
-                    Phone (optional)
-                  </label>
-                  <input {...register("phone")} className="ss-input" />
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-[rgb(232_238_251_/_0.92)]">
-                    <HiCurrencyDollar className="mr-1 inline h-4 w-4 text-[var(--ss-brand)]" />
-                    Offer Amount (optional)
-                  </label>
-                  <input
-                    type="number"
-                    step="0.01"
-                    {...register("offerAmount")}
-                    className="ss-input"
-                  />
-                </div>
-
-                <div>
-                  <label className="mb-1 block text-sm font-medium text-[rgb(232_238_251_/_0.92)]">
-                    Message
-                  </label>
-                  <textarea
-                    rows={4}
-                    {...register("message", { required: "Message is required" })}
-                    className="ss-textarea"
-                    placeholder="I'm interested in this item..."
-                  />
-                  {errors.message && (
-                    <p className="mt-1 text-sm text-red-400">{errors.message.message}</p>
-                  )}
-                </div>
-
+          {product.images.length > 1 && (
+            <div className="grid grid-cols-4 gap-2 sm:grid-cols-6">
+              {product.images.map((img, i) => (
                 <button
-                  type="submit"
-                  disabled={createInquiry.isPending}
-                  className="ss-btn-primary w-full disabled:cursor-not-allowed disabled:opacity-50"
+                  key={img.publicId || i}
+                  onClick={() => setActiveImage(i)}
+                  className={`overflow-hidden rounded-xl border p-0.5 transition ${
+                    i === activeImage
+                      ? "border-emerald-500 bg-emerald-500/20"
+                      : "border-zinc-800 bg-zinc-900/70 hover:border-zinc-700"
+                  }`}
                 >
-                  {createInquiry.isPending ? "Sending..." : "Send Inquiry"}
+                  <img src={img.url} alt="Product view" className="aspect-square w-full object-cover" />
                 </button>
-              </form>
-            )}
+              ))}
+            </div>
+          )}
+        </section>
+
+        <section className="rounded-3xl border border-zinc-800 bg-zinc-900/60 p-6 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+          <span className="inline-flex rounded-full border border-zinc-700 px-3 py-1 text-xs text-zinc-300">
+            {product.category?.label}
+          </span>
+          <h1 className="mt-4 text-4xl tracking-tighter text-zinc-100">{product.title}</h1>
+          <p className="mt-4 text-3xl font-semibold tracking-tight text-emerald-300">${product.price?.toFixed(2)}</p>
+          {product.quantity > 0 && <p className="mt-2 text-sm text-zinc-400">{product.quantity} currently available</p>}
+
+          <div className="mt-6 border-t border-zinc-800 pt-6">
+            <h2 className="text-sm uppercase tracking-[0.16em] text-zinc-500">Description</h2>
+            <p className="mt-3 whitespace-pre-line leading-relaxed text-zinc-300">{product.description}</p>
           </div>
-        </div>
+
+          {product.seller && (
+            <div className="mt-6 rounded-2xl border border-zinc-800 bg-zinc-950/50 p-4">
+              <p className="text-xs uppercase tracking-[0.12em] text-zinc-500">Seller</p>
+              <div className="mt-3 flex items-center gap-3">
+                <img
+                  src={product.seller.profileImage?.url}
+                  alt={product.seller.fullName}
+                  className="h-12 w-12 rounded-full object-cover"
+                />
+                <div>
+                  <p className="font-medium text-zinc-100">{product.seller.fullName}</p>
+                  <p className="text-sm text-zinc-400">Verified marketplace account</p>
+                </div>
+              </div>
+            </div>
+          )}
+
+          {product.status === "active" && (
+            <button
+              onClick={() => setShowInquiry(!showInquiry)}
+              className="mt-6 w-full rounded-xl border border-emerald-500/50 bg-emerald-500/20 px-4 py-3 font-medium text-emerald-200 transition hover:bg-emerald-500/30 active:scale-[0.98]"
+            >
+              {showInquiry ? "Close inquiry form" : "Contact seller"}
+            </button>
+          )}
+
+          {showInquiry && (
+            <form onSubmit={handleSubmit(onSubmitInquiry)} className="mt-5 space-y-4 rounded-2xl border border-zinc-800 bg-zinc-950/40 p-4">
+              <label className="flex flex-col gap-2 text-sm text-zinc-300">
+                <span className="inline-flex items-center gap-1"><HiUser /> Your name</span>
+                <input {...register("name", { required: "Name is required" })} className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100" />
+                <span className="text-xs text-zinc-500">Use your full name so sellers can identify your inquiry.</span>
+                {errors.name && <span className="text-sm text-rose-300">{errors.name.message}</span>}
+              </label>
+
+              <label className="flex flex-col gap-2 text-sm text-zinc-300">
+                <span className="inline-flex items-center gap-1"><HiMail /> Email</span>
+                <input type="email" {...register("email", { required: "Email is required" })} className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100" />
+                {errors.email && <span className="text-sm text-rose-300">{errors.email.message}</span>}
+              </label>
+
+              <label className="flex flex-col gap-2 text-sm text-zinc-300">
+                <span className="inline-flex items-center gap-1"><HiPhone /> Phone</span>
+                <input {...register("phone")} className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100" />
+              </label>
+
+              <label className="flex flex-col gap-2 text-sm text-zinc-300">
+                <span className="inline-flex items-center gap-1"><HiCurrencyDollar /> Offer amount</span>
+                <input type="number" step="0.01" {...register("offerAmount")} className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100" />
+              </label>
+
+              <label className="flex flex-col gap-2 text-sm text-zinc-300">
+                Message
+                <textarea
+                  rows={4}
+                  {...register("message", { required: "Message is required" })}
+                  className="w-full rounded-xl border border-zinc-700 bg-zinc-900 px-3 py-2.5 text-zinc-100"
+                  placeholder="Share pickup timeline, delivery preferences, or additional questions"
+                />
+                {errors.message && <span className="text-sm text-rose-300">{errors.message.message}</span>}
+              </label>
+
+              <button
+                type="submit"
+                disabled={createInquiry.isPending}
+                className="w-full rounded-xl border border-emerald-500/50 bg-emerald-500/20 px-4 py-3 font-medium text-emerald-200 transition hover:bg-emerald-500/30 active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-60"
+              >
+                {createInquiry.isPending ? "Sending inquiry..." : "Send inquiry"}
+              </button>
+            </form>
+          )}
+        </section>
       </div>
     </div>
   );

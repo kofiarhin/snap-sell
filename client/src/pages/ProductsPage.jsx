@@ -1,5 +1,6 @@
 import { useSearchParams } from "react-router-dom";
 import { useState } from "react";
+import { HiSearch } from "react-icons/hi";
 import { useProducts } from "../hooks/queries/useProducts";
 import { useCategories } from "../hooks/queries/useCategories";
 import ProductCard from "../components/ProductCard";
@@ -7,7 +8,6 @@ import Pagination from "../components/Pagination";
 import LoadingSpinner from "../components/LoadingSpinner";
 import EmptyState from "../components/EmptyState";
 import CategoryRail from "../components/CategoryRail";
-import { HiSearch } from "react-icons/hi";
 
 const ProductsPage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -38,37 +38,54 @@ const ProductsPage = () => {
   };
 
   return (
-    <div className="pb-8">
-      <section className="ss-page pb-4 md:pb-5">
-        <h1 className="text-3xl font-bold tracking-tight text-white">All Products</h1>
+    <div className="pb-10">
+      <section className="mx-auto max-w-[1400px] px-4 pb-2 pt-8 md:pt-10">
+        <div className="grid gap-6 rounded-3xl border border-zinc-800 bg-zinc-900/60 p-6 md:grid-cols-[1.1fr_0.9fr] md:items-end">
+          <div>
+            <p className="text-xs uppercase tracking-[0.2em] text-zinc-500">Catalog</p>
+            <h1 className="mt-2 text-4xl tracking-tighter text-zinc-100 md:text-5xl">Browse all products</h1>
+            <p className="mt-3 max-w-[65ch] text-zinc-400">
+              Refine by keyword, category, and sort order to quickly narrow down relevant listings.
+            </p>
+          </div>
 
-        <div className="mt-6 flex flex-col gap-4 sm:flex-row">
-          <form onSubmit={handleSearch} className="flex flex-1 gap-2">
-            <div className="relative flex-1">
-              <HiSearch className="pointer-events-none absolute left-3 top-1/2 h-5 w-5 -translate-y-1/2 text-[rgb(154_164_184_/_0.85)]" />
-              <input
-                type="text"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Search..."
-                className="ss-input pl-10"
-              />
-            </div>
-            <button type="submit" className="ss-btn-primary px-4 py-2.5">
-              Search
-            </button>
-          </form>
+          <div className="space-y-3">
+            <form onSubmit={handleSearch} className="grid gap-3 sm:grid-cols-[1fr_auto]">
+              <label className="flex flex-col gap-2 text-sm text-zinc-300">
+                Search listings
+                <div className="relative">
+                  <HiSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+                  <input
+                    type="text"
+                    value={searchInput}
+                    onChange={(e) => setSearchInput(e.target.value)}
+                    placeholder="Search by title or description"
+                    className="w-full rounded-xl border border-zinc-700 bg-zinc-950/80 py-2.5 pl-10 pr-3 text-zinc-100 outline-none focus:border-emerald-500"
+                  />
+                </div>
+              </label>
+              <button
+                type="submit"
+                className="mt-auto rounded-xl border border-emerald-500/50 bg-emerald-500/20 px-4 py-2.5 font-medium text-emerald-200 transition hover:bg-emerald-500/30 active:scale-[0.98]"
+              >
+                Search
+              </button>
+            </form>
 
-          <select
-            value={params.sort}
-            onChange={(e) => updateParams({ sort: e.target.value, page: "" })}
-            className="ss-select w-full sm:w-auto"
-          >
-            <option value="-createdAt">Newest</option>
-            <option value="createdAt">Oldest</option>
-            <option value="price">Price: Low to High</option>
-            <option value="-price">Price: High to Low</option>
-          </select>
+            <label className="flex flex-col gap-2 text-sm text-zinc-300">
+              Sort listings
+              <select
+                value={params.sort}
+                onChange={(e) => updateParams({ sort: e.target.value, page: "" })}
+                className="w-full rounded-xl border border-zinc-700 bg-zinc-950/80 px-3 py-2.5 text-zinc-200 outline-none sm:w-auto"
+              >
+                <option value="-createdAt">Newest</option>
+                <option value="createdAt">Oldest</option>
+                <option value="price">Price: Low to High</option>
+                <option value="-price">Price: High to Low</option>
+              </select>
+            </label>
+          </div>
         </div>
       </section>
 
@@ -78,22 +95,19 @@ const ProductsPage = () => {
         onCategoryChange={(category) => updateParams({ category, page: "" })}
       />
 
-      <section className="ss-page pt-4 md:pt-6">
+      <section className="mx-auto max-w-[1400px] px-4 pt-6">
         {isLoading ? (
           <LoadingSpinner />
         ) : !data?.products?.length ? (
-          <EmptyState title="No products found" />
+          <EmptyState title="No products found" message="Try another category or broaden your keyword." />
         ) : (
           <>
-            <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:gap-6 lg:grid-cols-4">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-4">
               {data.products.map((product) => (
                 <ProductCard key={product._id} product={product} />
               ))}
             </div>
-            <Pagination
-              pagination={data.pagination}
-              onPageChange={(page) => updateParams({ page })}
-            />
+            <Pagination pagination={data.pagination} onPageChange={(page) => updateParams({ page })} />
           </>
         )}
       </section>

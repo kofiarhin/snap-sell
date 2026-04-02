@@ -1,10 +1,10 @@
 import { Link } from "react-router-dom";
-import { HiSearch } from "react-icons/hi";
+import { HiSearch, HiArrowRight } from "react-icons/hi";
 
-const heroHighlights = [
-  "Curated listings",
-  "Direct seller contact",
-  "Fresh arrivals daily",
+const pulseItems = [
+  "Latest arrivals indexed every hour",
+  "Image-first browsing with clear pricing",
+  "Direct inquiry flow to verified sellers",
 ];
 
 const HomeHero = ({
@@ -14,83 +14,68 @@ const HomeHero = ({
   productCount = 0,
   categoryCount = 0,
 }) => {
-  const listingStat = productCount > 0 ? `${productCount}+` : "Fresh";
-  const categoryStat = categoryCount > 0 ? `${categoryCount}` : "Curated";
-
   return (
-    <section className="ss-page pt-6 md:pt-10">
-      <div className="ss-hero-shell">
-        <div className="relative mx-auto max-w-3xl text-center">
-          <span className="ss-hero-eyebrow">SnapSell Marketplace</span>
-
-          <h1 className="mt-6 text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl">
-            Discover standout finds in a premium marketplace.
+    <section className="mx-auto max-w-[1400px] px-4 pt-8 md:pt-12">
+      <div className="grid min-h-[100dvh] gap-8 pb-10 md:grid-cols-[1.15fr_0.85fr] md:items-center md:gap-14">
+        <div className="space-y-7">
+          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-zinc-400">
+            SnapSell Marketplace
+          </p>
+          <h1 className="text-4xl leading-none tracking-tighter text-zinc-100 md:text-6xl">
+            Shop distinctive products from independent sellers.
           </h1>
-
-          <p className="ss-hero-copy mt-5">
-            Search image-led listings from trusted sellers across tech, home,
-            fashion, and more — all in one fast-moving feed.
+          <p className="max-w-[65ch] text-base leading-relaxed text-zinc-400">
+            Explore curated listings across technology, home, and style. Filter quickly,
+            compare visuals instantly, and connect with sellers in minutes.
           </p>
 
-          <form onSubmit={onSearchSubmit} className="ss-hero-search">
-            <div className="relative flex-1">
-              <label htmlFor="home-search" className="sr-only">
-                Search listings
-              </label>
-              <HiSearch className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#7f8aa3]" />
-              <input
-                id="home-search"
-                type="text"
-                value={searchInput}
-                onChange={(e) => onSearchInputChange(e.target.value)}
-                placeholder="Search listings, brands, or categories"
-                className="ss-hero-input"
-              />
-            </div>
-
+          <form onSubmit={onSearchSubmit} className="grid gap-3 sm:grid-cols-[1fr_auto]">
+            <label className="flex flex-col gap-2 text-sm text-zinc-300">
+              Search products
+              <div className="relative">
+                <HiSearch className="pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-zinc-500" />
+                <input
+                  type="text"
+                  value={searchInput}
+                  onChange={(e) => onSearchInputChange(e.target.value)}
+                  placeholder="Wireless camera, teak shelf, collector vinyl"
+                  className="w-full rounded-xl border border-zinc-800 bg-zinc-950/80 py-3 pl-10 pr-3 text-zinc-100 outline-none transition focus:border-emerald-500"
+                />
+              </div>
+            </label>
             <button
               type="submit"
-              className="ss-btn-primary h-12 w-full px-5 sm:h-14 sm:w-auto sm:px-6"
+              className="mt-auto inline-flex items-center justify-center gap-2 rounded-xl border border-emerald-500/60 bg-emerald-500/20 px-5 py-3 font-medium text-emerald-200 transition hover:bg-emerald-500/30 active:scale-[0.98]"
             >
-              Search marketplace
+              Find listings <HiArrowRight className="h-4 w-4" />
             </button>
           </form>
 
-          <div className="mt-4 flex flex-wrap items-center justify-center gap-3">
-            {heroHighlights.map((item) => (
-              <span key={item} className="ss-hero-tag">
+          <div className="flex flex-wrap gap-2">
+            {pulseItems.map((item) => (
+              <span key={item} className="rounded-full border border-zinc-800 bg-zinc-900/70 px-3 py-1 text-xs text-zinc-300">
                 {item}
               </span>
             ))}
           </div>
+        </div>
 
-          <div className="mt-5 flex justify-center">
-            <Link to="/products" className="ss-btn-secondary">
-              Browse latest listings
-            </Link>
+        <div className="grid gap-4 sm:grid-cols-2 md:grid-cols-1">
+          <div className="rounded-3xl border border-white/10 bg-zinc-900/70 p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+            <p className="text-sm text-zinc-400">Live marketplace inventory</p>
+            <p className="mt-3 text-5xl tracking-tighter text-zinc-100">{productCount || 0}</p>
+            <p className="mt-2 text-sm text-zinc-500">Updated continuously as new items publish.</p>
           </div>
-
-          <div className="mt-10 grid gap-3 sm:grid-cols-3">
-            <div className="ss-hero-stat text-center sm:text-left">
-              <span className="ss-hero-stat-value">{listingStat}</span>
-              <span className="ss-hero-stat-label">
-                live listings ready to explore
-              </span>
-            </div>
-
-            <div className="ss-hero-stat text-center sm:text-left">
-              <span className="ss-hero-stat-value">{categoryStat}</span>
-              <span className="ss-hero-stat-label">
-                curated categories to refine the feed
-              </span>
-            </div>
-
-            <div className="ss-hero-stat text-center sm:text-left">
-              <span className="ss-hero-stat-value">Image-first</span>
-              <span className="ss-hero-stat-label">
-                browse visually with pricing up front
-              </span>
-            </div>
+          <div className="rounded-3xl border border-white/10 bg-zinc-900/60 p-7 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)]">
+            <p className="text-sm text-zinc-400">Active categories</p>
+            <p className="mt-3 text-5xl tracking-tighter text-zinc-100">{categoryCount || 0}</p>
+            <p className="mt-2 text-sm text-zinc-500">Filter by category, price range, and newest drops.</p>
+            <Link
+              to="/products"
+              className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-emerald-300 transition hover:text-emerald-200"
+            >
+              Browse full catalog <HiArrowRight className="h-3.5 w-3.5" />
+            </Link>
           </div>
         </div>
       </div>

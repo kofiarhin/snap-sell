@@ -11,7 +11,6 @@ import {
   HiArchive,
   HiCheckCircle,
 } from "react-icons/hi";
-import { getDashboardNavItemClass } from "../utils/ui";
 
 const sellerLinks = [
   { to: "/dashboard", label: "Overview", icon: HiHome },
@@ -36,27 +35,34 @@ const DashboardLayout = () => {
   const links = user?.role === "admin" ? adminLinks : sellerLinks;
 
   return (
-    <div className="ss-page">
-      <div className="flex flex-col md:flex-row gap-6">
-        <aside className="md:w-64 shrink-0">
-          <nav className="ss-panel sticky top-24 space-y-1">
-            {links.map(({ to, label, icon }) => {
-              const isActive = location.pathname === to;
-              return (
-                <Link
-                  key={to}
-                  to={to}
-                  className={`flex items-center gap-3 px-4 py-2.5 rounded-lg text-sm font-medium transition-colors ${getDashboardNavItemClass(isActive)}`}
-                >
-                  {createElement(icon, { className: "w-5 h-5" })}
-                  {label}
-                </Link>
-              );
-            })}
-          </nav>
+    <div className="mx-auto max-w-[1400px] px-4 py-8">
+      <div className="grid gap-6 md:grid-cols-[280px_1fr]">
+        <aside>
+          <div className="sticky top-24 rounded-3xl border border-zinc-800 bg-zinc-900/60 p-4 shadow-[inset_0_1px_0_rgba(255,255,255,0.08)]">
+            <p className="px-3 pb-3 text-xs uppercase tracking-[0.2em] text-zinc-500">Workspace</p>
+            <nav className="space-y-1.5">
+              {links.map(({ to, label, icon }) => {
+                const isActive = location.pathname === to;
+                return (
+                  <Link
+                    key={to}
+                    to={to}
+                    className={`flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition ${
+                      isActive
+                        ? "border border-emerald-500/40 bg-emerald-500/15 text-emerald-200"
+                        : "border border-transparent text-zinc-300 hover:border-zinc-700 hover:bg-zinc-800/60"
+                    }`}
+                  >
+                    {createElement(icon, { className: "h-5 w-5" })}
+                    {label}
+                  </Link>
+                );
+              })}
+            </nav>
+          </div>
         </aside>
 
-        <main className="flex-1 min-w-0">
+        <main className="min-w-0 rounded-3xl border border-zinc-800 bg-zinc-900/50 p-5 md:p-6">
           <Outlet />
         </main>
       </div>
