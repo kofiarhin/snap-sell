@@ -12,6 +12,7 @@ const envSchema = z.object({
     .transform((val) => val === "true")
     .default("false"),
   CLIENT_URL: z.string().default("http://localhost:5173"),
+  CLIENT_URLS: z.string().optional().default(""),
   CLOUDINARY_CLOUD_NAME: z.string().min(1, "CLOUDINARY_CLOUD_NAME is required"),
   CLOUDINARY_API_KEY: z.string().min(1, "CLOUDINARY_API_KEY is required"),
   CLOUDINARY_API_SECRET: z.string().min(1, "CLOUDINARY_API_SECRET is required"),

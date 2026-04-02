@@ -6,8 +6,7 @@ const errorHandler = require("./middleware/errorHandler");
 
 const app = express();
 
-const configuredOrigins = (env.CLIENT_URL || "")
-  .split(",")
+const configuredOrigins = [env.CLIENT_URL, ...(env.CLIENT_URLS || "").split(",")]
   .map((origin) => origin.trim())
   .filter(Boolean);
 
