@@ -5,10 +5,10 @@ const CategoryRail = ({ categories = [], activeCategory, onCategoryChange }) => 
     <section className="ss-page pt-2 md:pt-4">
       <div className="flex items-center justify-between gap-3">
         <div>
-          <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[rgb(255_255_255_/_0.46)]">
+          <p className="ss-section-eyebrow">
             Categories
           </p>
-          <h2 className="mt-1 text-xl font-semibold tracking-tight text-white md:text-2xl">
+          <h2 className="ss-section-title">
             Browse by category
           </h2>
         </div>
