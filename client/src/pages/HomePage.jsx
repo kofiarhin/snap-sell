@@ -1,12 +1,14 @@
 import { useState } from "react";
-import { Link, useSearchParams } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 import { useProducts } from "../hooks/queries/useProducts";
 import { useCategories } from "../hooks/queries/useCategories";
 import ProductCard from "../components/ProductCard";
 import Pagination from "../components/Pagination";
 import LoadingSpinner from "../components/LoadingSpinner";
 import EmptyState from "../components/EmptyState";
-import { HiSearch } from "react-icons/hi";
+import HomeHero from "../components/HomeHero";
+import CategoryRail from "../components/CategoryRail";
+import "../styles/home.css";
 
 const HomePage = () => {
   const [searchParams, setSearchParams] = useSearchParams();
@@ -22,6 +24,9 @@ const HomePage = () => {
 
   const { data, isLoading } = useProducts(params);
   const { data: categories } = useCategories();
+  const activeCategory = categories?.find(
+    (category) => category.slug === params.category
+  );
 
   const updateParams = (updates) => {
     const newParams = { ...Object.fromEntries(searchParams), ...updates };
@@ -37,87 +42,63 @@ const HomePage = () => {
   };
 
   return (
-    <div>
-      {/* Hero */}
-      <section className="bg-gradient-to-r from-indigo-600 to-purple-600 text-white">
-        <div className="max-w-7xl mx-auto px-4 py-16 text-center">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Find What You Need
-          </h1>
-          <p className="text-indigo-100 text-lg mb-8 max-w-2xl mx-auto">
-            Browse thousands of products from trusted sellers
-          </p>
-          <form onSubmit={handleSearch} className="max-w-xl mx-auto flex gap-2">
-            <div className="relative flex-1">
-              <HiSearch className="absolute left-3 top-1/2 -translate-y-1/2 w-5 h-5 text-gray-400" />
-              <input
-                type="text"
-                value={searchInput}
-                onChange={(e) => setSearchInput(e.target.value)}
-                placeholder="Search products..."
-                className="w-full pl-10 pr-4 py-3 rounded-lg text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-300"
-              />
+    <div className="pb-8">
+      <HomeHero
+        searchInput={searchInput}
+        onSearchInputChange={setSearchInput}
+        onSearchSubmit={handleSearch}
+        productCount={data?.pagination?.total || 0}
+        categoryCount={categories?.length || 0}
+      />
+
+      {categories?.length > 0 && (
+        <CategoryRail
+          categories={categories}
+          activeCategory={params.category}
+          onCategoryChange={(category) =>
+            updateParams({ category, page: "" })
+          }
+        />
+      )}
+
+      <section className="ss-page pt-3 md:pt-4">
+        <div className="ss-filter-bar">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[rgb(255_255_255_/_0.42)]">
+              Marketplace feed
+            </p>
+            <div className="mt-2 flex flex-wrap items-center gap-2 sm:gap-3">
+              <h2 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
+                Latest listings
+              </h2>
+              <span className="ss-chip">
+                {data?.pagination?.total || 0} products
+              </span>
+              {activeCategory && (
+                <span className="ss-chip ss-chip-active">
+                  {activeCategory.label}
+                </span>
+              )}
             </div>
-            <button
-              type="submit"
-              className="bg-white text-indigo-600 px-6 py-3 rounded-lg font-medium hover:bg-indigo-50"
+          </div>
+
+          <label className="flex flex-col gap-2 text-sm sm:flex-row sm:items-center sm:gap-3">
+            <span className="ss-muted whitespace-nowrap">Sort by</span>
+            <select
+              value={params.sort}
+              onChange={(e) => updateParams({ sort: e.target.value, page: "" })}
+              className="ss-select min-w-[12rem]"
             >
-              Search
-            </button>
-          </form>
+              <option value="-createdAt">Newest</option>
+              <option value="createdAt">Oldest</option>
+              <option value="price">Price: Low to High</option>
+              <option value="-price">Price: High to Low</option>
+            </select>
+          </label>
         </div>
       </section>
 
-      {/* Categories */}
-      {categories?.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 py-8">
-          <div className="flex gap-2 overflow-x-auto pb-2">
-            <button
-              onClick={() => updateParams({ category: "", page: "" })}
-              className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
-                !params.category
-                  ? "bg-indigo-600 text-white"
-                  : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
-            >
-              All
-            </button>
-            {categories.map((cat) => (
-              <button
-                key={cat.value}
-                onClick={() => updateParams({ category: cat.slug, page: "" })}
-                className={`px-4 py-2 rounded-full text-sm whitespace-nowrap ${
-                  params.category === cat.slug
-                    ? "bg-indigo-600 text-white"
-                    : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-                }`}
-              >
-                {cat.label}
-              </button>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* Sort */}
-      <section className="max-w-7xl mx-auto px-4 flex justify-between items-center">
-        <p className="text-sm text-gray-500">
-          {data?.pagination?.total || 0} products
-        </p>
-        <select
-          value={params.sort}
-          onChange={(e) => updateParams({ sort: e.target.value, page: "" })}
-          className="border border-gray-300 rounded-lg px-3 py-2 text-sm"
-        >
-          <option value="-createdAt">Newest</option>
-          <option value="createdAt">Oldest</option>
-          <option value="price">Price: Low to High</option>
-          <option value="-price">Price: High to Low</option>
-        </select>
-      </section>
-
-      {/* Products */}
-      <section className="max-w-7xl mx-auto px-4 py-8">
+      <section className="ss-page pt-6 md:pt-8">
         {isLoading ? (
           <LoadingSpinner />
         ) : !data?.products?.length ? (
