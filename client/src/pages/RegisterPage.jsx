@@ -46,6 +46,7 @@ const RegisterPage = () => {
               intent="profile"
               value={profileImage}
               onChange={setProfileImage}
+              isPublic
             />
           </div>
 

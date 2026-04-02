@@ -33,3 +33,13 @@ exports.changePassword = asyncHandler(async (req, res) => {
   await authService.changePassword(req.user._id, req.body);
   sendSuccess(res, { message: "Password changed successfully" });
 });
+
+exports.forgotPassword = asyncHandler(async (req, res) => {
+  await authService.forgotPassword(req.body.email);
+  sendSuccess(res, { message: "If that email exists, a reset link has been sent" });
+});
+
+exports.resetPassword = asyncHandler(async (req, res) => {
+  await authService.resetPassword(req.params.token, req.body.password);
+  sendSuccess(res, { message: "Password reset successful" });
+});

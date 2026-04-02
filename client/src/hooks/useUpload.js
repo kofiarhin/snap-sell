@@ -1,13 +1,14 @@
 import { useState } from "react";
-import { getUploadSignature, uploadToCloudinary } from "../services/uploadService";
+import { getUploadSignature, getPublicUploadSignature, uploadToCloudinary } from "../services/uploadService";
 
-export const useUpload = () => {
+export const useUpload = ({ isPublic = false } = {}) => {
   const [uploading, setUploading] = useState(false);
 
   const upload = async (file, intent) => {
     setUploading(true);
     try {
-      const { data } = await getUploadSignature(intent);
+      const signFn = isPublic ? getPublicUploadSignature : getUploadSignature;
+      const { data } = await signFn(intent);
       const result = await uploadToCloudinary(file, data.data);
       return result;
     } finally {

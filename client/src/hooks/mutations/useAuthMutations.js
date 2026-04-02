@@ -2,7 +2,15 @@ import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import toast from "react-hot-toast";
-import { register, login, logout, updateProfile, changePassword } from "../../services/authService";
+import {
+  register,
+  login,
+  logout,
+  updateProfile,
+  changePassword,
+  forgotPassword,
+  resetPassword,
+} from "../../services/authService";
 import { setUser, clearUser } from "../../features/authSlice";
 
 export const useRegister = () => {
@@ -85,6 +93,33 @@ export const useChangePassword = () => {
     },
     onError: (err) => {
       toast.error(err.response?.data?.error?.message || "Password change failed");
+    },
+  });
+};
+
+export const useForgotPassword = () => {
+  return useMutation({
+    mutationFn: forgotPassword,
+    onSuccess: () => {
+      toast.success("If that email exists, a reset link has been sent");
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.error?.message || "Failed to send reset email");
+    },
+  });
+};
+
+export const useResetPassword = () => {
+  const navigate = useNavigate();
+
+  return useMutation({
+    mutationFn: ({ token, data }) => resetPassword(token, data),
+    onSuccess: () => {
+      toast.success("Password reset successful! Please log in.");
+      navigate("/login");
+    },
+    onError: (err) => {
+      toast.error(err.response?.data?.error?.message || "Password reset failed");
     },
   });
 };

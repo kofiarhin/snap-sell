@@ -17,6 +17,11 @@ const envSchema = z.object({
   CLOUDINARY_API_SECRET: z.string().min(1, "CLOUDINARY_API_SECRET is required"),
   MAX_FILE_SIZE_MB: z.coerce.number().default(5),
   BCRYPT_SALT_ROUNDS: z.coerce.number().default(12),
+  EMAIL_HOST: z.string().default(""),
+  EMAIL_PORT: z.coerce.number().default(587),
+  EMAIL_USER: z.string().default(""),
+  EMAIL_PASS: z.string().default(""),
+  EMAIL_FROM: z.string().default("noreply@snapsell.com"),
 });
 
 const parsed = envSchema.safeParse(process.env);

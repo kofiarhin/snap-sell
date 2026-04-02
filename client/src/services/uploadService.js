@@ -4,6 +4,9 @@ import { api } from "../lib/api";
 export const getUploadSignature = (intent) =>
   api.post("/uploads/sign", { intent });
 
+export const getPublicUploadSignature = (intent) =>
+  api.post("/uploads/sign-public", { intent });
+
 export const uploadToCloudinary = async (file, signatureData) => {
   const formData = new FormData();
   formData.append("file", file);

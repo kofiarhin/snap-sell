@@ -3,8 +3,8 @@ import { HiPhotograph, HiX } from "react-icons/hi";
 import { useUpload } from "../hooks/useUpload";
 import toast from "react-hot-toast";
 
-const ImageUpload = ({ intent, value, onChange, multiple = false }) => {
-  const { upload, uploading } = useUpload();
+const ImageUpload = ({ intent, value, onChange, multiple = false, isPublic = false }) => {
+  const { upload, uploading } = useUpload({ isPublic });
   const inputRef = useRef();
   const [previews, setPreviews] = useState([]);
 

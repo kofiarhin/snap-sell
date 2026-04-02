@@ -1,25 +1,16 @@
-import { useEffect } from "react";
-import { baseUrl } from "./constants/constants";
+import { useAuth } from "./hooks/queries/useAuth";
+import AppRoutes from "./routes/AppRoutes";
+import LoadingSpinner from "./components/LoadingSpinner";
+import { useSelector } from "react-redux";
 
 const App = () => {
-  useEffect(() => {
-    const getStatus = async () => {
-      try {
-        const res = await fetch(baseUrl);
-        console.log(res.ok);
-      } catch (error) {
-        console.error("Failed to fetch server status:", error);
-      }
-    };
+  useAuth();
 
-    getStatus();
-  }, []);
+  const { isLoading } = useSelector((state) => state.auth);
 
-  return (
-    <div>
-      <h1 className="text-center text-4xl m-8">SnapSell</h1>
-    </div>
-  );
+  if (isLoading) return <LoadingSpinner />;
+
+  return <AppRoutes />;
 };
 
 export default App;

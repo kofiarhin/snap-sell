@@ -1,7 +1,9 @@
 const jwt = require("jsonwebtoken");
+const crypto = require("crypto");
 const env = require("../config/env");
 const User = require("../models/User");
 const AppError = require("../utils/AppError");
+const { sendPasswordResetEmail } = require("../utils/email");
 
 const generateToken = (userId) =>
   jwt.sign({ id: userId }, env.JWT_SECRET, { expiresIn: env.JWT_EXPIRES_IN });
@@ -72,4 +74,44 @@ const changePassword = async (userId, { currentPassword, newPassword }) => {
   await user.save();
 };
 
-module.exports = { register, login, updateProfile, changePassword };
+const forgotPassword = async (email) => {
+  const user = await User.findOne({ email });
+  if (!user) {
+    // Don't reveal whether user exists
+    return;
+  }
+
+  const resetToken = user.createPasswordResetToken();
+  await user.save({ validateBeforeSave: false });
+
+  const resetUrl = `${env.CLIENT_URL}/reset-password/${resetToken}`;
+
+  try {
+    await sendPasswordResetEmail(user.email, resetUrl);
+  } catch (err) {
+    user.resetPasswordToken = undefined;
+    user.resetPasswordExpires = undefined;
+    await user.save({ validateBeforeSave: false });
+    throw new AppError("Failed to send reset email. Try again later.", 500, "EMAIL_ERROR");
+  }
+};
+
+const resetPassword = async (token, password) => {
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  const user = await User.findOne({
+    resetPasswordToken: hashedToken,
+    resetPasswordExpires: { $gt: Date.now() },
+  });
+
+  if (!user) {
+    throw new AppError("Invalid or expired reset token", 400, "VALIDATION_ERROR");
+  }
+
+  user.password = password;
+  user.resetPasswordToken = undefined;
+  user.resetPasswordExpires = undefined;
+  await user.save();
+};
+
+module.exports = { register, login, updateProfile, changePassword, forgotPassword, resetPassword };
