@@ -9,12 +9,7 @@ import {
 import LoadingSpinner from "../../components/LoadingSpinner";
 import EmptyState from "../../components/EmptyState";
 
-const statusBadge = {
-  active: "bg-green-100 text-green-700",
-  sold: "bg-blue-100 text-blue-700",
-  archived: "bg-gray-100 text-gray-700",
-  inactive: "bg-yellow-100 text-yellow-700",
-};
+import { getStatusBadgeClass } from "../../utils/ui";
 
 const MyListingsPage = () => {
   const { data: products, isLoading } = useMyProducts();
@@ -33,7 +28,7 @@ const MyListingsPage = () => {
         <h1 className="text-2xl font-bold">My Listings</h1>
         <Link
           to="/dashboard/listings/new"
-          className="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-700"
+          className="ss-btn-primary"
         >
           + Add Product
         </Link>
@@ -44,7 +39,7 @@ const MyListingsPage = () => {
           title="No active listings"
           message="Create your first product listing"
           action={
-            <Link to="/dashboard/listings/new" className="text-indigo-600 hover:underline">
+            <Link to="/dashboard/listings/new" className="text-[var(--ss-brand)] hover:underline">
               Add Product
             </Link>
           }
@@ -54,7 +49,7 @@ const MyListingsPage = () => {
           {activeProducts.map((product) => (
             <div
               key={product._id}
-              className="flex items-center gap-4 bg-white border border-gray-200 rounded-lg p-4"
+              className="flex items-center gap-4 ss-card"
             >
               <img
                 src={product.images?.[0]?.url}
@@ -63,11 +58,11 @@ const MyListingsPage = () => {
               />
               <div className="flex-1 min-w-0">
                 <h3 className="font-medium truncate">{product.title}</h3>
-                <p className="text-sm text-gray-500">
+                <p className="text-sm ss-muted">
                   ${product.price?.toFixed(2)} &middot; Qty: {product.quantity}
                 </p>
               </div>
-              <span className={`px-2 py-1 rounded text-xs font-medium ${statusBadge[product.status]}`}>
+              <span className={getStatusBadgeClass(product.status)}>
                 {product.status}
               </span>
               <div className="flex gap-2">
@@ -81,13 +76,13 @@ const MyListingsPage = () => {
                   <>
                     <button
                       onClick={() => soldMutation.mutate(product._id)}
-                      className="text-sm text-green-600 hover:underline"
+                      className="text-sm text-emerald-300 hover:underline"
                     >
                       Sold
                     </button>
                     <button
                       onClick={() => archiveMutation.mutate(product._id)}
-                      className="text-sm text-gray-600 hover:underline"
+                      className="text-sm ss-muted hover:underline"
                     >
                       Archive
                     </button>

@@ -6,10 +6,12 @@ const LoadingSpinner = ({ size = "md" }) => {
   };
 
   return (
-    <div className="flex items-center justify-center py-12">
-      <div
-        className={`animate-spin rounded-full border-b-2 border-indigo-600 ${sizes[size]}`}
-      />
+    <div className="ss-loading">
+      <div className="flex items-center justify-center">
+        <div
+          className={`animate-spin rounded-full border-2 border-[rgb(255_255_255_/_0.2)] border-t-[var(--ss-brand)] ${sizes[size]}`}
+        />
+      </div>
     </div>
   );
 };

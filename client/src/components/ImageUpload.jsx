@@ -63,12 +63,12 @@ const ImageUpload = ({ intent, value, onChange, multiple = false, isPublic = fal
     <div>
       <div className="flex flex-wrap gap-3 mb-3">
         {displayImages.map((url, i) => (
-          <div key={i} className="relative w-24 h-24 rounded-lg overflow-hidden border border-gray-200">
+          <div key={i} className="relative w-24 h-24 rounded-lg overflow-hidden border border-[rgb(255_255_255_/_0.15)] bg-[rgb(255_255_255_/_0.03)]">
             <img src={url} alt="" className="w-full h-full object-cover" />
             <button
               type="button"
               onClick={() => removeImage(i)}
-              className="absolute top-1 right-1 bg-red-500 text-white rounded-full p-0.5"
+              className="absolute top-1 right-1 ss-btn-danger !p-1"
             >
               <HiX className="w-3 h-3" />
             </button>
@@ -80,7 +80,7 @@ const ImageUpload = ({ intent, value, onChange, multiple = false, isPublic = fal
         type="button"
         onClick={() => inputRef.current?.click()}
         disabled={uploading}
-        className="flex items-center gap-2 px-4 py-2 border border-dashed border-gray-300 rounded-lg text-gray-600 hover:border-indigo-400 hover:text-indigo-600 disabled:opacity-50"
+        className="flex items-center gap-2 px-4 py-2 border border-dashed border-[rgb(255_255_255_/_0.25)] rounded-lg ss-muted hover:border-[var(--ss-brand)] hover:text-[var(--ss-brand)] disabled:opacity-50"
       >
         <HiPhotograph className="w-5 h-5" />
         {uploading ? "Uploading..." : "Upload Image"}

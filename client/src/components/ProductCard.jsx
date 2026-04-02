@@ -4,9 +4,9 @@ const ProductCard = ({ product }) => {
   return (
     <Link
       to={`/products/${product.slug}`}
-      className="group bg-white rounded-xl shadow-sm border border-gray-200 overflow-hidden hover:shadow-md transition-shadow"
+      className="group ss-card-elevated overflow-hidden hover:-translate-y-0.5 hover:border-[rgb(255_255_255_/_0.22)]"
     >
-      <div className="aspect-square overflow-hidden bg-gray-100">
+      <div className="aspect-square overflow-hidden rounded-lg bg-[rgb(255_255_255_/_0.03)]">
         <img
           src={product.images?.[0]?.url}
           alt={product.title}
@@ -14,18 +14,12 @@ const ProductCard = ({ product }) => {
           loading="lazy"
         />
       </div>
-      <div className="p-4">
-        <h3 className="font-medium text-gray-900 truncate">{product.title}</h3>
-        <p className="text-indigo-600 font-semibold mt-1">
-          ${product.price?.toFixed(2)}
-        </p>
-        <div className="flex items-center justify-between mt-2 text-sm text-gray-500">
-          <span className="bg-gray-100 px-2 py-0.5 rounded text-xs">
-            {product.category?.label}
-          </span>
-          {product.seller?.fullName && (
-            <span className="truncate ml-2">{product.seller.fullName}</span>
-          )}
+      <div className="pt-4">
+        <h3 className="font-medium text-white truncate">{product.title}</h3>
+        <p className="text-[var(--ss-brand)] font-semibold mt-1">${product.price?.toFixed(2)}</p>
+        <div className="flex items-center justify-between mt-2 text-sm ss-muted">
+          <span className="ss-chip">{product.category?.label}</span>
+          {product.seller?.fullName && <span className="truncate ml-2">{product.seller.fullName}</span>}
         </div>
       </div>
     </Link>

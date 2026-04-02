@@ -10,17 +10,15 @@ const Pagination = ({ pagination, onPageChange }) => {
       <button
         onClick={() => onPageChange(page - 1)}
         disabled={page <= 1}
-        className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 hover:bg-gray-50"
+        className="ss-btn-secondary !p-2 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         <HiChevronLeft className="w-5 h-5" />
       </button>
-      <span className="text-sm text-gray-600 px-4">
-        Page {page} of {pages}
-      </span>
+      <span className="text-sm ss-chip ss-chip-active">Page {page} of {pages}</span>
       <button
         onClick={() => onPageChange(page + 1)}
         disabled={page >= pages}
-        className="p-2 rounded-lg border border-gray-300 disabled:opacity-50 hover:bg-gray-50"
+        className="ss-btn-secondary !p-2 disabled:opacity-40 disabled:cursor-not-allowed"
       >
         <HiChevronRight className="w-5 h-5" />
       </button>
