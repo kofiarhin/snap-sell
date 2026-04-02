@@ -12,6 +12,7 @@ import {
   HiCheckCircle,
 } from "react-icons/hi";
 import { getDashboardNavItemClass } from "../utils/ui";
+import SettingsMenu from "./SettingsMenu";
 
 const sellerLinks = [
   { to: "/dashboard", label: "Overview", icon: HiHome },
@@ -39,8 +40,13 @@ const DashboardLayout = () => {
     <div className="ss-page">
       <div className="flex flex-col md:flex-row gap-6">
         <aside className="md:w-64 shrink-0">
-          <nav className="ss-panel sticky top-24 space-y-1">
-            {links.map(({ to, label, icon }) => {
+          <div className="ss-panel sticky top-24 space-y-3">
+            <div className="flex items-center justify-between">
+              <p className="text-xs font-semibold uppercase tracking-wide ss-muted">Settings</p>
+              <SettingsMenu />
+            </div>
+            <nav className="space-y-1">
+              {links.map(({ to, label, icon }) => {
               const isActive = location.pathname === to;
               return (
                 <Link
@@ -52,8 +58,9 @@ const DashboardLayout = () => {
                   {label}
                 </Link>
               );
-            })}
-          </nav>
+              })}
+            </nav>
+          </div>
         </aside>
 
         <main className="flex-1 min-w-0">

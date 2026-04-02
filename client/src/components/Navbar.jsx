@@ -3,6 +3,7 @@ import { useSelector } from "react-redux";
 import { useLogout } from "../hooks/mutations/useAuthMutations";
 import { HiMenu, HiX } from "react-icons/hi";
 import { useState } from "react";
+import SettingsMenu from "./SettingsMenu";
 
 const navLinkClass = (active) =>
   `text-sm font-medium transition-colors ${
@@ -16,14 +17,14 @@ const Navbar = () => {
   const location = useLocation();
 
   return (
-    <nav className="sticky top-0 z-50 border-b border-[rgb(255_255_255_/_0.1)] bg-[rgb(9_11_18_/_0.75)] backdrop-blur-xl">
+    <nav className="sticky top-0 z-50 border-b backdrop-blur-xl ss-navbar">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16 items-center">
           <Link to="/" className="text-2xl font-black tracking-tight text-[var(--ss-brand)]">
-            Snap<span className="text-white">Sell</span>
+            Snap<span style={{ color: "var(--ss-text)" }}>Sell</span>
           </Link>
 
-          <div className="hidden md:flex items-center gap-6">
+          <div className="hidden md:flex items-center gap-4">
             <Link to="/products" className={navLinkClass(location.pathname.startsWith("/products"))}>
               Browse
             </Link>
@@ -40,10 +41,11 @@ const Navbar = () => {
                   Dashboard
                 </Link>
                 <div className="flex items-center gap-3">
+                  <SettingsMenu />
                   <img
                     src={user.profileImage?.url}
                     alt={user.fullName}
-                    className="w-8 h-8 rounded-full object-cover border border-[rgb(255_255_255_/_0.15)]"
+                    className="w-8 h-8 rounded-full object-cover border"
                   />
                   <button onClick={() => logoutMutation.mutate()} className="ss-btn-ghost text-sm">
                     Logout
@@ -52,6 +54,7 @@ const Navbar = () => {
               </>
             ) : (
               <>
+                <SettingsMenu />
                 <Link to="/login" className={navLinkClass(location.pathname === "/login")}>
                   Login
                 </Link>
@@ -62,9 +65,12 @@ const Navbar = () => {
             )}
           </div>
 
-          <button className="md:hidden ss-btn-ghost" onClick={() => setOpen(!open)}>
+          <div className="flex items-center gap-1 md:hidden">
+            <SettingsMenu />
+            <button className="ss-btn-ghost" onClick={() => setOpen(!open)}>
             {open ? <HiX className="w-6 h-6" /> : <HiMenu className="w-6 h-6" />}
-          </button>
+            </button>
+          </div>
         </div>
 
         {open && (

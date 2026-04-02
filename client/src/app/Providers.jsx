@@ -3,6 +3,7 @@ import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { BrowserRouter } from "react-router-dom";
 import { Toaster } from "react-hot-toast";
 import { store } from "./store";
+import ThemeProvider from "./ThemeProvider";
 
 const queryClient = new QueryClient({
   defaultOptions: {
@@ -17,12 +18,14 @@ const queryClient = new QueryClient({
 const Providers = ({ children }) => {
   return (
     <Provider store={store}>
-      <QueryClientProvider client={queryClient}>
-        <BrowserRouter>
-          {children}
-          <Toaster position="top-right" />
-        </BrowserRouter>
-      </QueryClientProvider>
+      <ThemeProvider>
+        <QueryClientProvider client={queryClient}>
+          <BrowserRouter>
+            {children}
+            <Toaster position="top-right" />
+          </BrowserRouter>
+        </QueryClientProvider>
+      </ThemeProvider>
     </Provider>
   );
 };
