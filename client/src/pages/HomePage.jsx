@@ -62,11 +62,11 @@ const HomePage = () => {
       <section className="ss-page pt-3 md:pt-4">
         <div className="ss-filter-bar">
           <div>
-            <p className="text-xs font-semibold uppercase tracking-[0.22em] text-[rgb(255_255_255_/_0.42)]">
+            <p className="ss-section-eyebrow">
               Marketplace feed
             </p>
             <div className="mt-2 flex flex-wrap items-center gap-2 sm:gap-3">
-              <h2 className="text-xl font-semibold tracking-tight text-white md:text-2xl">
+              <h2 className="ss-section-title">
                 Latest listings
               </h2>
               <span className="ss-chip">{data?.pagination?.total || 0} products</span>

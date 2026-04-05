@@ -23,11 +23,11 @@ const HomeHero = ({
         <div className="relative mx-auto max-w-3xl text-center">
           <span className="ss-hero-eyebrow">SnapSell Marketplace</span>
 
-          <h1 className="mt-6 text-4xl font-semibold tracking-tight text-white sm:text-5xl md:text-6xl">
+          <h1 className="ss-hero-title">
             Discover standout finds in a premium marketplace.
           </h1>
 
-          <p className="ss-hero-copy mt-5">
+          <p className="ss-hero-copy">
             Search image-led listings from trusted sellers across tech, home,
             fashion, and more — all in one fast-moving feed.
           </p>
@@ -37,7 +37,7 @@ const HomeHero = ({
               <label htmlFor="home-search" className="sr-only">
                 Search listings
               </label>
-              <HiSearch className="pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2 text-[#7f8aa3]" />
+              <HiSearch className="ss-hero-search-icon pointer-events-none absolute left-4 top-1/2 h-5 w-5 -translate-y-1/2" />
               <input
                 id="home-search"
                 type="text"

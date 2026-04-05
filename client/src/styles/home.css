@@ -3,7 +3,14 @@
 .ss-hero-shell {
   @apply relative overflow-hidden border px-5 py-10 sm:px-8 sm:py-12 md:px-12 md:py-16;
   border-radius: 2rem;
+  background: linear-gradient(180deg, #ffffff 0%, #f3f7ff 100%);
+  border-color: color-mix(in srgb, var(--ss-border) 85%, white 15%);
+  box-shadow: 0 30px 80px rgb(90 114 148 / 0.16);
+}
+
+:root[data-theme="dark"] .ss-hero-shell {
   background: linear-gradient(180deg, rgb(16 19 29 / 0.96), rgb(10 13 21 / 0.98));
+  border-color: color-mix(in srgb, var(--ss-border) 90%, transparent);
   box-shadow: 0 30px 80px rgb(0 0 0 / 0.38);
 }
 
@@ -15,8 +22,12 @@
   width: 24rem;
   height: 24rem;
   transform: translateX(-50%);
-  background: radial-gradient(circle, rgb(255 252 0 / 0.14), transparent 65%);
+  background: radial-gradient(circle, rgb(255 252 0 / 0.24), transparent 65%);
   pointer-events: none;
+}
+
+:root[data-theme="dark"] .ss-hero-shell::before {
+  background: radial-gradient(circle, rgb(255 252 0 / 0.14), transparent 65%);
 }
 
 .ss-hero-shell::after {
@@ -27,40 +38,84 @@
   width: 12rem;
   height: 12rem;
   border-radius: 9999px;
-  background: radial-gradient(circle, rgb(255 255 255 / 0.05), transparent 72%);
+  background: radial-gradient(circle, rgb(111 138 180 / 0.14), transparent 72%);
   pointer-events: none;
+}
+
+:root[data-theme="dark"] .ss-hero-shell::after {
+  background: radial-gradient(circle, rgb(255 255 255 / 0.05), transparent 72%);
 }
 
 .ss-hero-eyebrow {
   @apply inline-flex items-center rounded-full border px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.22em];
+  background: color-mix(in srgb, var(--ss-brand) 16%, white);
+  border-color: color-mix(in srgb, var(--ss-brand) 35%, var(--ss-border));
+  color: color-mix(in srgb, var(--ss-text) 72%, #5d4f00);
+}
+
+:root[data-theme="dark"] .ss-hero-eyebrow {
   background: rgb(255 252 0 / 0.08);
   border-color: rgb(255 252 0 / 0.2);
   color: #fff7a8;
 }
 
+.ss-hero-title {
+  @apply mt-6 text-4xl font-semibold tracking-tight sm:text-5xl md:text-6xl;
+  color: var(--ss-text);
+}
+
 .ss-hero-copy {
-  @apply mx-auto max-w-2xl text-base leading-7 sm:text-lg;
+  @apply mx-auto mt-5 max-w-2xl text-base leading-7 sm:text-lg;
+  color: color-mix(in srgb, var(--ss-muted) 88%, #4d5f7c);
+}
+
+:root[data-theme="dark"] .ss-hero-copy {
   color: #c0cadc;
 }
 
 .ss-hero-search {
   @apply mx-auto mt-8 flex max-w-3xl flex-col gap-3 rounded-2xl border p-3 sm:flex-row sm:items-center;
-  background: rgb(9 12 20 / 0.82);
-  border-color: rgb(255 255 255 / 0.08);
-  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.03);
+  background: color-mix(in srgb, var(--ss-bg-elevated) 90%, white 10%);
+  border-color: color-mix(in srgb, var(--ss-border) 88%, white 12%);
+  box-shadow: 0 8px 30px rgb(88 109 136 / 0.14);
   backdrop-filter: blur(12px);
 }
 
+:root[data-theme="dark"] .ss-hero-search {
+  background: rgb(9 12 20 / 0.82);
+  border-color: rgb(255 255 255 / 0.08);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.03);
+}
+
+.ss-hero-search-icon {
+  color: color-mix(in srgb, var(--ss-muted) 85%, #5f769a);
+}
+
+:root[data-theme="dark"] .ss-hero-search-icon {
+  color: #7f8aa3;
+}
+
 .ss-hero-input {
-  @apply h-12 w-full rounded-xl border-0 bg-transparent pl-11 pr-3 text-sm text-white outline-none sm:h-14 sm:text-base;
+  @apply h-12 w-full rounded-xl border-0 bg-transparent pl-11 pr-3 text-sm outline-none sm:h-14 sm:text-base;
+  color: var(--ss-text);
 }
 
 .ss-hero-input::placeholder {
+  color: color-mix(in srgb, var(--ss-muted) 82%, #6a7b95);
+}
+
+:root[data-theme="dark"] .ss-hero-input::placeholder {
   color: #7f8aa3;
 }
 
 .ss-hero-tag {
   @apply inline-flex items-center rounded-full border px-3 py-1.5 text-xs font-medium sm:text-sm;
+  background: color-mix(in srgb, var(--ss-surface-2) 92%, white 8%);
+  border-color: color-mix(in srgb, var(--ss-border) 90%, white 10%);
+  color: color-mix(in srgb, var(--ss-text) 86%, #3c4f6d);
+}
+
+:root[data-theme="dark"] .ss-hero-tag {
   background: rgb(255 255 255 / 0.03);
   border-color: rgb(255 255 255 / 0.08);
   color: #d7deeb;
@@ -68,22 +123,52 @@
 
 .ss-hero-stat {
   @apply rounded-2xl border px-4 py-4;
-  background: rgb(255 255 255 / 0.03);
-  border-color: rgb(255 255 255 / 0.08);
+  background: color-mix(in srgb, var(--ss-surface) 93%, white 7%);
+  border-color: color-mix(in srgb, var(--ss-border) 86%, white 14%);
+  box-shadow: 0 10px 28px rgb(88 109 136 / 0.12);
   backdrop-filter: blur(10px);
 }
 
+:root[data-theme="dark"] .ss-hero-stat {
+  background: rgb(255 255 255 / 0.03);
+  border-color: rgb(255 255 255 / 0.08);
+  box-shadow: none;
+}
+
 .ss-hero-stat-value {
-  @apply text-2xl font-semibold tracking-tight text-white sm:text-3xl;
+  @apply text-2xl font-semibold tracking-tight sm:text-3xl;
+  color: var(--ss-text);
 }
 
 .ss-hero-stat-label {
   @apply mt-1 block text-sm;
+  color: color-mix(in srgb, var(--ss-muted) 86%, #445770);
+}
+
+:root[data-theme="dark"] .ss-hero-stat-label {
   color: #a7b1c4;
+}
+
+.ss-section-eyebrow {
+  @apply text-xs font-semibold uppercase tracking-[0.22em];
+  color: color-mix(in srgb, var(--ss-muted) 84%, #61728d);
+}
+
+.ss-section-title {
+  @apply mt-1 text-xl font-semibold tracking-tight md:text-2xl;
+  color: var(--ss-text);
 }
 
 .ss-filter-bar {
   @apply flex flex-col gap-4 rounded-2xl border px-4 py-4 md:flex-row md:items-center md:justify-between md:px-5;
-  background: rgb(16 21 33 / 0.72);
+  background: color-mix(in srgb, var(--ss-bg-elevated) 88%, white 12%);
+  border-color: color-mix(in srgb, var(--ss-border) 85%, white 15%);
+  box-shadow: 0 14px 36px rgb(84 105 131 / 0.11);
   backdrop-filter: blur(10px);
+}
+
+:root[data-theme="dark"] .ss-filter-bar {
+  background: rgb(16 21 33 / 0.72);
+  border-color: color-mix(in srgb, var(--ss-border) 88%, transparent);
+  box-shadow: none;
 }
